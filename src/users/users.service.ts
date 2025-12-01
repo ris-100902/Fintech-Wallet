@@ -4,16 +4,20 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { WalletService } from 'src/wallet/wallet.service';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User)
     private usersRepository: Repository<User>,
+    private walletService: WalletService
   ){}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.usersRepository.create(createUserDto);
-    return await this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+    await this.walletService.createWithUser(savedUser);
+    return savedUser;
   }
 
   async findAll(): Promise<User[]> {

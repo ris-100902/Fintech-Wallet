@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Wallet } from "src/wallet/entities/wallet.entity";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity('users')
 @Unique(['email'])
@@ -14,4 +15,7 @@ export class User {
 
     @Column()
     password: string;
+
+    @OneToOne(() => Wallet, (wallet) => wallet.user)
+    wallet: Wallet;
 }
