@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { WalletModule } from './wallet/wallet.module';
+import { LedgerModule } from './ledger/ledger.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { WalletModule } from './wallet/wallet.module';
     }),
     AuthModule,
     UsersModule,
-    WalletModule],
+    WalletModule,
+    LedgerModule],
   controllers: [AppController],
   providers: [AppService],
 })

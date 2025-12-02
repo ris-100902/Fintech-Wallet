@@ -3,9 +3,10 @@ import { WalletService } from './wallet.service';
 import { WalletController } from './wallet.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Wallet } from './entities/wallet.entity';
+import { LedgerModule } from 'src/ledger/ledger.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Wallet])],
+  imports: [TypeOrmModule.forFeature([Wallet]), LedgerModule],
   controllers: [WalletController],
   providers: [WalletService],
   exports: [WalletService]
