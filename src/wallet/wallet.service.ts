@@ -14,8 +14,9 @@ export class WalletService {
 
   async createWithUser(user: User): Promise<Wallet>{
     const wallet = this.walletRepository.create({user});
+    const savedWallet = await this.walletRepository.save(wallet);
     await this.ledgerService.addTransaction(wallet, 'CREDIT', 0, 0);
-    return await this.walletRepository.save(wallet);
+    return savedWallet; 
   }
 
   async findAll(): Promise<Wallet[]> {
