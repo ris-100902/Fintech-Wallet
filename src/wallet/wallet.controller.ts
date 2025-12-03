@@ -1,10 +1,17 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { Wallet } from './entities/wallet.entity';
+import { Ledger } from 'src/ledger/entities/ledger.entity';
+import { LedgerService } from 'src/ledger/ledger.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('wallet')
 export class WalletController {
-  constructor(private readonly walletService: WalletService) {}
+  constructor(
+    private readonly walletService: WalletService,
+    private ledgerService: LedgerService
+  ) {}
 
   @Get()
   findAll() {
@@ -14,6 +21,11 @@ export class WalletController {
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Wallet|null> {
     return await this.walletService.findOne(+id);
+  }
+
+  @Get(':id/mini-statement')
+  async getStatement(@Param('id')id: string): Promise<Ledger[]> {
+    return await this.ledgerService.getForWallet(+id);
   }
 
   @Post(':id/add-money')
